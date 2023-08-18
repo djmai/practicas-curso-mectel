@@ -1,0 +1,150 @@
+<!-- <!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+ 	<title>Get Data</title>
+ 	<link href="public/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header>
+		<h1>MEDICIÓN TEMPERATURA</h1>
+ 	</header>
+ 	<div id="content">
+ 		<h2>LM35</h2>
+ 		<p>A continuación se presenta el muestreo de temperatura con un sensor LM35 y la información se envío por medio de un arduino</p>
+ 		<p> La temperatura es: <span id="temp-state"></span> </p>
+ 	</div>
+
+
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	var current ="0";
+ 	var tempState= document.getElementById('temp-state');
+ 	socket.on("data", function(data){
+ 		tempState.innerHTML=current + "°C"
+ 		current=data;
+ 		});
+
+ 	</script>
+	<div>
+		<canvas id="myChart"></canvas>
+	  	<canvas id="line-chart"></canvas>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
+		<script>
+			//var socket = io();
+			new Chart(document.getElementById("line-chart"), {
+				type : 'line',
+				data : {
+					labels : ["Serial"],
+					datasets : [{
+						label: "Serial Data from Arduino",
+                  		backgroundColor: 'rgb(52, 73, 94)',
+                 		borderColor: 'rgb(41, 128, 185)',
+                  		data: [],
+					}]
+				},
+				options : {
+					title : {
+						display : true,
+						text : 'Chart JS Line Chart Example'
+					}
+				}
+				counter=0; 
+				// socket.on("data", function(data){
+				// 	chart.data.labels.push(counter);
+				// 	chart.data.datasets.forEach(dataset => {dataset.data.push(dataSerial.value);
+				// });
+        		// counter++;
+        		// chart.update();
+				// });
+			});
+		</script>
+		</div>
+	  </body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+ <head>
+	<meta charset="UTF-8">
+ 	<title>Get Data</title>
+ 	<link href="/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header>
+		<h1>MEDICIÓN TEMPERATURA</h1>
+ 	</header>
+ 	<div id="content">
+ 		<h2>LM35</h2>
+ 		<p>A continuación se presenta el muestreo de temperatura con un sensor LM35 y la información se envío por medio de un arduino</p>
+ 		<p> La temperatura es:  <span id="temp-state"></span> </p>
+ 	</div>
+
+    <canvas id="myChart"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="/socket.io/socket.io.js" charset="utf-8"></script>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script type="text/javascript">
+      
+     const socket = io();
+      // esto es para imprimir la info-
+    var current ="0";
+ 	var tempState= document.getElementById('temp-state');
+ 	// socket.on("data", function(data){
+ 	// 	tempState.innerHTML=current + "°C"
+ 	// 	current=data;
+ 	// 	});
+// chart
+      var ctx = document.getElementById('myChart').getContext('2d');
+
+      let counter = 0 ;
+      socket.on('data', function (data) {
+      	tempState.innerHTML=current + "°C"
+ 				current=data;
+        //console.log(dataSerial);
+
+        	myDate = new Date();
+					hours = myDate.getHours();
+					minutes = myDate.getMinutes();
+					seconds = myDate.getSeconds();
+					if (hours < 10) hours = 0 + hours;
+					if (minutes < 10) minutes = "0" + minutes;
+					if (seconds < 10) seconds = "0" + seconds;
+				//	$("#HoraActual").text(hours+ ":" +minutes+ ":" +seconds);
+				
+
+
+        //var today = new Date();
+        mychart.data.labels.push(hours+ ":" +minutes+ ":" +seconds);
+        mychart.data.datasets.forEach(dataset => {
+          dataset.data.push(data);
+        });
+        counter++;
+        mychart.update();
+      });
+
+
+      var mychart = new Chart(ctx, {
+          // The type of chart we want to create
+          type: 'line',
+
+          // The data for our dataset
+          data: {
+              labels: ["Serial"],
+              datasets: [{
+                  label: "Serial Data from Arduino",
+                  backgroundColor: 'rgb(52, 73, 94)',
+                  borderColor: 'rgb(41, 128, 185)',
+                  data: [],
+              }]
+          },
+
+          // Configuration options go here
+          options: {}
+      });
+
+    </script>
+  </body>
+</html>

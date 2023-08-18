@@ -1,0 +1,29 @@
+{
+ margin: 0;
+ padding: 0;
+}
+body{
+ font-family: Verdana, Arial, sans-serif;
+}
+h2{
+ font-size: 18px;
+}
+p{
+ font-size: 14px;
+}
+header{
+ background: #FE8402;
+ color: white;
+}
+header h1{
+ padding-top: 25px;
+}
+header h2{
+ padding-bottom: 45px;
+}
+header h1,header h2, header h3, header p{
+ padding-left: 12px;
+}
+#content{
+ margin: 22px;
+}
